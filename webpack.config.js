@@ -3,6 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 /**
  * Plugins instant
@@ -14,7 +15,7 @@ const cleanDistFolder = new CleanWebpackPlugin(['dist'], {
 });
 
 const extractLess = new ExtractTextPlugin({
-    filename: "../css/app.css",
+    filename: "assets/css/app.css",
     // disable: process.env.NODE_ENV === "dev"
 });
 
@@ -26,8 +27,15 @@ module.exports = {
         app: './src/assets/js/app.js'
     },
     output: {
-        path: path.resolve(__dirname, 'dist/assets/js'),
-        filename: 'app.js',
+        path: path.resolve(__dirname, 'dist/'),
+        filename: 'assets/js/app.js',
+    },
+    devServer: {
+        contentBase: path.resolve(__dirname, "dist/"),
+        compress: true,
+        port: 9000,
+        stats: "errors-only",
+        open: true
     },
     module: {
         rules: [
@@ -38,13 +46,6 @@ module.exports = {
                     loader: 'babel-loader'
                 }
             },
-            // {
-            //     test: /\.css$/,
-            //     use: [
-            //         'style-loader',
-            //         'css-loader'
-            //     ]
-            // },
             {
                 test: /\.less$/,
                 use: extractLess.extract({
@@ -78,6 +79,11 @@ module.exports = {
     },
     plugins: [
         cleanDistFolder,
-        extractLess
+        extractLess,
+        new HtmlWebpackPlugin({
+            inject: false,
+            template: './src/index.html',
+            filename: 'index.html'
+        })
     ]
 };
