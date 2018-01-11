@@ -27,14 +27,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist/assets/js'),
-        filename: 'bundle.js',
-        // publicPath: path.resolve(__dirname, 'dist/')
-    },
-    devServer: {
-        contentBase: path.resolve(__dirname, "dist"),
-        compress: true,
-        port: 9000,
-        stats: "errors-only"
+        filename: 'app.js',
     },
     module: {
         rules: [

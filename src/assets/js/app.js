@@ -1,8 +1,6 @@
 import '../less/app.less';
 
-console.log("main");
-
-
+console.log("app.js");
 
 var testTemplate = `hello world`;
 console.log(testTemplate);
