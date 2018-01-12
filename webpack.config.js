@@ -96,6 +96,12 @@ module.exports = {
                             useRelativePath: process.env.NODE_ENV === "prod",
                             name: '[name].[ext]'
                         }
+                    },
+                    {
+                        loader: 'image-webpack-loader',
+                        options: {
+                            bypassOnDebug: true
+                        }
                     }
                 ]
             }
