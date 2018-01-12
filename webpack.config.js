@@ -85,6 +85,19 @@ module.exports = {
                         }
                     }
                 ]
+            },
+            {
+                test: /\.(gif|png|jpe?g|svg|webp)$/i,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            // outputPath: 'assets/img/',
+                            useRelativePath: process.env.NODE_ENV === "prod",
+                            name: '[name].[ext]'
+                        }
+                    }
+                ]
             }
         ]
     },
