@@ -4,6 +4,9 @@ const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ImageminPlugin = require('imagemin-webpack-plugin').default;
+const JpegRecompress = require('imagemin-jpeg-recompress');
 
 /**
  * Plugins instant
@@ -75,36 +78,36 @@ module.exports = {
                     fallback: "style-loader"
                 })
             },
-            {
-                test: /\.html$/,
-                use: [
-                    {
-                        loader: "html-loader",
-                        options: {
-                            minimize: true
-                        }
-                    }
-                ]
-            },
-            {
-                test: /\.(gif|png|jpe?g|svg|webp)$/i,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            // outputPath: 'assets/img/',
-                            useRelativePath: process.env.NODE_ENV === "prod",
-                            name: '[name].[ext]'
-                        }
-                    },
-                    {
-                        loader: 'image-webpack-loader',
-                        options: {
-                            bypassOnDebug: true
-                        }
-                    }
-                ]
-            }
+            // {
+            //     test: /\.html$/,
+            //     use: [
+            //         {
+            //             loader: "html-loader",
+            //             options: {
+            //                 minimize: true
+            //             }
+            //         }
+            //     ]
+            // },
+            // {
+            //     test: /\.(gif|png|jpe?g|svg|webp)$/i,
+            //     use: [
+            //         {
+            //             loader: 'file-loader',
+            //             options: {
+            //                 // outputPath: 'assets/img/',
+            //                 useRelativePath: process.env.NODE_ENV === "prod",
+            //                 name: '[name].[ext]'
+            //             }
+            //         },
+            //         {
+            //             loader: 'image-webpack-loader',
+            //             options: {
+            //                 bypassOnDebug: true
+            //             }
+            //         }
+            //     ]
+            // }
         ]
     },
     plugins: [
@@ -119,6 +122,27 @@ module.exports = {
             inject: false,
             template: './src/about.html',
             filename: 'about.html'
-        })
+        }),
+        new CopyWebpackPlugin([
+            {
+                from: './src/assets/img',
+                to: 'assets/img'
+            }
+        ]),
+        new ImageminPlugin(
+            {
+                test: /\.(gif|png|jpe?g|svg|webp)$/i,
+                optipng: {optimizationLevel: 5},
+                pngquant: {quality: '65-90'},
+                gifsicle: {interlaced: true},
+                svgo: {removeViewBox: true},
+                jpegtran: {progressive: true},
+                plugins: [
+                    JpegRecompress({
+                        max: 80
+                    })
+                ]
+            }
+        )
     ]
 };
