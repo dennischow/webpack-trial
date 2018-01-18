@@ -131,6 +131,7 @@ module.exports = {
         ]),
         new ImageminPlugin(
             {
+                disable: process.env.NODE_ENV === 'dev',
                 test: /\.(gif|png|jpe?g|svg|webp)$/i,
                 optipng: {optimizationLevel: 5},
                 pngquant: {quality: '65-90'},
